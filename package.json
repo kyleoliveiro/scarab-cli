@@ -1,0 +1,45 @@
+{
+  "name": "scarab-cli",
+  "version": "0.1.0",
+  "description": "Command-line interface for the Scarab Sass framework",
+  "main": "index.js",
+  "bin": {
+    "scarab": "index.js"
+  },
+  "scripts": {
+    "test": "scarab -h"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/watchtowerdigital/scarab-cli.git"
+  },
+  "keywords": [
+    "cli",
+    "sass",
+    "scss",
+    "css",
+    "atomic",
+    "functional",
+    "framework",
+    "responsive",
+    "front-end"
+  ],
+  "author": "Kyle Oliveiro <kyle@watchtower.digital>",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/watchtowerdigital/scarab-carapace/issues"
+  },
+  "homepage": "https://github.com/watchtowerdigital/scarab-carapace#readme",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "cli-spinners": "^1.0.0",
+    "commander": "^2.9.0",
+    "lodash": "^4.17.4",
+    "node-sass": "^4.3.0",
+    "node-sass-utils": "^1.1.2",
+    "ora": "^1.2.0",
+    "prettyjson-256": "^1.5.2",
+    "replace-in-file": "^2.5.2",
+    "sass-glob-importer": "^1.0.1"
+  }
+}
