@@ -2,12 +2,12 @@
   "name": "scarab-cli",
   "version": "0.1.0",
   "description": "Command-line interface for the Scarab Sass framework",
-  "main": "index.js",
+  "main": "scarab.js",
   "bin": {
-    "scarab": "index.js"
+    "scarab": "scarab.js"
   },
   "scripts": {
-    "test": "scarab -h"
+    "test": "./scarab.js -h"
   },
   "repository": {
     "type": "git",
