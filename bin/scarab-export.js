@@ -51,7 +51,7 @@ module.exports = function ( input, outputDir ) {
 
 	sass.render({
 		data: fileData,
-		includePaths: [ 'node_modules' ],
+		includePaths: [ path.join(__dirname, '../../') ],
 		importer: globImporter(),
 		functions: {
 			'scarabExport($scarab)': function ( scarab ) {
