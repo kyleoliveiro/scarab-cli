@@ -1,6 +1,6 @@
 {
   "name": "scarab-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Command-line interface for the Scarab Sass framework",
   "main": "scarab.js",
   "bin": {
