@@ -17,7 +17,7 @@ const ora            = require('ora');
 module.exports = function ( outputDir, options ) {
 	// Set default variables
 	if( typeof outputDir === 'undefined' ) {
-		outputDir = 'scarab-config'
+		outputDir = 'scss'
 	}
 
 	// Initialize spinner
@@ -41,14 +41,28 @@ module.exports = function ( outputDir, options ) {
 	}
 	
 	// Clone scarab-carapace config folder
-	exec('svn export --trust-server-cert https://github.com/watchtowerdigital/scarab-carapace/trunk/src/config ' + outputDir, (err) => {
+	exec('svn export --trust-server-cert https://github.com/watchtowerdigital/scarab-carapace/trunk/src/config ' + outputDir + '/scarab-config', (err) => {
 		if(err) {
 			spinner.fail(chalk.red('Error: ') + chalk.yellow(err.message));
 			process.exit(1);
 		};
 
+		const scarabImport = `@import 'scarab-carapace/core';    // Imports scarab-scss, core utils & config
+@import 'scarab-config/_';         // Your custom Carapace config
+@import 'scarab-carapace/config';  // Imports default module config
+@import 'scarab-config/modules';   // Your custom Carapace module config
+@import 'scarab-carapace/modules'; // Generates CSS classes`;
+
+		// Scaffold scarab import file
+		exec('echo "' + scarabImport + '" >> ' + outputDir + '/scarab-index.scss', (err) => {
+			if(err) {
+				spinner.fail(chalk.red('Error: ') + chalk.yellow(err.message));
+				process.exit(1);
+			};
+		});
+
 		// Scaffold modules folder
-		exec('echo "// Custom module config" >> ' + outputDir + '/modules.config.scss', (err) => {
+		exec('echo "// Custom module config" >> ' + outputDir + '/scarab-config/modules.scss', (err) => {
 			if(err) {
 				spinner.fail(chalk.red('Error: ') + chalk.yellow(err.message));
 				process.exit(1);
@@ -63,7 +77,6 @@ module.exports = function ( outputDir, options ) {
 				to: 'set'
 			})
 			.then(changedFiles => {
-				console.log(changedFiles);
 				spinner.succeed('Config files and folders generated → ' + chalk.green(outputDir));
 			})
 			.catch(err => {
