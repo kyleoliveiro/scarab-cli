@@ -50,8 +50,7 @@ module.exports = function ( outputDir, options ) {
 		const scarabImport = `@import 'scarab-carapace/core';    // Imports scarab-scss, core utils & config
 @import 'scarab-config/_';         // Your custom Carapace config
 @import 'scarab-carapace/config';  // Imports default module config
-@import 'scarab-config/modules';   // Your custom Carapace module config
-@import 'scarab-carapace/modules'; // Generates CSS classes`;
+@import 'scarab-config/modules';   // Your custom Carapace module config`;
 
 		// Scaffold scarab import file
 		exec('echo "' + scarabImport + '" >> ' + outputDir + '/scarab-index.scss', (err) => {
@@ -61,7 +60,7 @@ module.exports = function ( outputDir, options ) {
 			};
 		});
 
-		// Scaffold modules folder
+		// Scaffold module config file
 		exec('echo "// Custom module config" >> ' + outputDir + '/scarab-config/modules.scss', (err) => {
 			if(err) {
 				spinner.fail(chalk.red('Error: ') + chalk.yellow(err.message));
@@ -77,7 +76,15 @@ module.exports = function ( outputDir, options ) {
 				to: 'set'
 			})
 			.then(changedFiles => {
-				spinner.succeed('Config files and folders generated → ' + chalk.green(outputDir));
+				// Create carapace-modules.scss
+				exec('echo "@import \'scarab-carapace/modules\'; // Generates CSS classes" >> ' + outputDir + '/carapace-modules.scss', (err) => {
+					if(err) {
+						spinner.fail(chalk.red('Error: ') + chalk.yellow(err.message));
+						process.exit(1);
+					};
+
+					spinner.succeed('Config files and folders generated → ' + chalk.green(outputDir));
+				})
 			})
 			.catch(err => {
 				spinner.fail(chalk.red('Error: ') + chalk.yellow(err.message));
