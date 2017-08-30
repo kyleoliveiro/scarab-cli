@@ -78,7 +78,7 @@ module.exports = function ( outputDir, options ) {
 			.then(changedFiles => {
 				// Create carapace-modules.scss
 				const carapaceModules = `@import 'scarab-index';
-				@import 'scarab-carapace/modules';    // Generates CSS classes`;
+@import 'scarab-carapace/modules';    // Generates CSS classes`;
 
 				exec('echo "' + carapaceModules + '" >> ' + outputDir + '/carapace-modules.scss', (err) => {
 					if(err) {
