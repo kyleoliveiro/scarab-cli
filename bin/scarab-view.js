@@ -15,26 +15,26 @@ module.exports = function ( keys, options ) {
 
 	// Set default variables
 	if( typeof options.input === 'undefined' ) {
-		input = './scarab.config.json'
+		input = './scarab.json'
 	} else {
 		input = options.input;
 	}
 
 	// Initialize spinner
 	const spinner = ora({
-		text:    'Parsing ' + chalk.blue(path.relative(process.cwd(), input)),
+		text:    `Parsing ${chalk.blue(path.relative(process.cwd(), input))}`,
 		spinner: cliSpinners.dots3,
 		color:   'yellow'
 	}).start();
 
 	// If input path is an existing directory, build path to scarab.config.json
 	if( fs.existsSync(input) && fs.lstatSync(input).isDirectory() ) {
-		input = path.resolve(input, 'scarab.config.json');
+		input = path.resolve(input, 'scarab.json');
 	}
 
 	// Validate input path
 	if( !fs.existsSync(input) ) {
-		spinner.fail(chalk.red('Error:') + ' ' + chalk.blue(input) + ' does not exist');
+		spinner.fail(`${chalk.red('Error:')} ${chalk.blue(input)} does not exist`);
 		process.exit(1);
 	}
 
@@ -44,13 +44,13 @@ module.exports = function ( keys, options ) {
 	const fileName     = path.basename(input);
 	const dirName      = path.dirname(input);	
 	const scarabConfig = JSON.parse(fileData);
-	const SCARAB       = scarabConfig.SCARAB;
+	const SCARAB       = scarabConfig.__SCARAB;
 
 	spinner.stop();
 
 	// Get value from SCARAB based on keys
-	const scarabTree = [ '$SCARAB' ];
-	var content = SCARAB;
+	const scarabTree = [ '$__SCARAB' ];
+	var content = SCARAB.INVENTORY;
 
 	keys.forEach(function(key) {
 		content = content[key];
@@ -69,7 +69,7 @@ module.exports = function ( keys, options ) {
 	pjson.init(pjsonOptions);
 
 	if( options.breadcrumbs ) {
-		console.log( '\n' + chalk.dim.underline(scarabTree.join(' > ')) );
+		console.log(`\n${chalk.dim.underline(scarabTree.join(' > '))}`);
 	}
 
 	// Render content to screen based on type of content

@@ -22,7 +22,7 @@ const obj = {
 					break;
 				case 'color':
 					const rgba = [val.getR(), val.getG(), val.getB(), val.getA()];
-					jsArray[i] = 'rgba(' + rgba.join(', ') + ')';
+					jsArray[i] = `rgba(${rgba.join(', ')})`;
 					break;
 				case 'number':
 					jsArray[i] = val.getValue() + val.getUnit();
@@ -60,7 +60,7 @@ const obj = {
 					break;
 				case 'color':
 					const rgba    = [val.getR(), val.getG(), val.getB(), val.getA()];
-					jsObject[key] = 'rgba(' + rgba.join(', ') + ')';
+					jsObject[key] = `rgba(${rgba.join(', ')})`;
 					break;
 				case 'number':
 					jsObject[key] = val.getValue() + val.getUnit();

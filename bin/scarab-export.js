@@ -1,5 +1,3 @@
-'use strict';
-
 const fs             = require('fs');
 const path           = require('path');
 const sass           = require('node-sass');
@@ -18,32 +16,32 @@ module.exports = function ( input, outputDir ) {
 
 	// Initialize spinner
 	const spinner = ora({
-		text:    'Generating ' + chalk.blue('scarab.config.json') + ' from ' + chalk.yellow(input),
+		text:    `Generating ${chalk.blue('scarab.config.json')} from ${chalk.yellow(input)}`,
 		spinner: cliSpinners.dots3,
 		color:   'yellow'
 	}).start();
 
 	// Validate input path
 	if( !fs.existsSync(input) ) {
-		spinner.fail(chalk.red('Error: ') + chalk.blue(input) + ' does not exist');
+		spinner.fail(`${chalk.red('Error: ')} ${chalk.blue(input)} does not exist`);
 		process.exit(1);
 	}
 
 	if( fs.lstatSync(input).isDirectory() ) {
-		spinner.fail(chalk.red('Error: ') + chalk.blue(input) + ' is not a valid path to an .scss file');
+		spinner.fail(`${chalk.red('Error: ')} ${chalk.blue(input)} is not a valid path to an .scss file`);
 		process.exit(1);
 	}
 
 	// Validate output path
 	if( !fs.existsSync(outputDir) ) {
-		spinner.fail(chalk.red('Error: ') + chalk.blue(outputDir) + ' does not exist');
+		spinner.fail(`${chalk.red('Error: ')} ${chalk.blue(outputDir)} does not exist`);
 		process.exit(1);
 	}
 
 	// Generate JSON file
 	const cwd      = process.cwd();
 	const file     = fs.readFileSync(input);
-	const fileData = file.toString() + '$SCARAB-EXPORT: #{ scarabExport( $SCARAB ) };';
+	const fileData = file.toString() + '$SCARAB-EXPORT: #{ scarabExport( $__SCARAB ) };';
 	const fileName = path.basename(input);
 	const dirName  = path.dirname(input);
 
@@ -51,28 +49,28 @@ module.exports = function ( input, outputDir ) {
 
 	sass.render({
 		data: fileData,
-		includePaths: [ path.join(__dirname, '../../') ],
-		importer: globImporter(),
+		includePaths: [ 'node_modules', '../../node_modules' ],
+		// importer: globImporter(),
 		functions: {
-			'scarabExport($scarab)': function ( scarab ) {
-				// Convert $SCARAB Sass variable to JSON
+			'scarabExport($__scarab)': function ( scarab ) {
+				// Convert $-SCARAB Sass variable to JSON
 				const scarabObj = sassExtensions.sassMapToObject(scarab);
 				const scarabJson = JSON.stringify({
 					"createdFrom": dirName + '/' + fileName,
 					"createdAt": new Date(),
-					"SCARAB": scarabObj
+					"__SCARAB": scarabObj
 				});
 
 				process.chdir(cwd);
 
 				// Write output file
-				const outPath = path.join(outputDir, 'scarab.config.json');
+				const outPath = path.join(outputDir, 'scarab.json');
 				fs.writeFile(outPath, scarabJson, function(err) {
 					if(err) {
-						spinner.fail(chalk.red('Error: ') + chalk.yellow(err.message));
+						spinner.fail(`${chalk.red('Error: ')} ${chalk.yellow(err.message)}`);
 						return process.exit(1);
 					} else {
-						spinner.succeed(chalk.blue(input) + ' → ' + chalk.green(outPath));
+						spinner.succeed(`${chalk.blue(input)} → ${chalk.green(outPath)}`);
 					}
 				});
 
@@ -81,7 +79,7 @@ module.exports = function ( input, outputDir ) {
 		}
 	}, function(err, result) {
 		if(err) {
-			spinner.fail(chalk.red('Error: ') + chalk.yellow(err.message));
+			spinner.fail(`${chalk.red('Error: ')} ${chalk.yellow(err.message)}`);
 		}
 	});
 };
