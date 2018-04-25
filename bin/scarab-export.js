@@ -3,7 +3,7 @@ const path           = require('path');
 const sass           = require('node-sass');
 const sassUtils      = require('node-sass-utils')(sass);
 const sassExtensions = require('./sass-extensions');
-const globImporter   = require('sass-glob-importer');
+const globImporter   = require('node-sass-glob-importer');
 const chalk          = require('chalk');
 const cliSpinners    = require('cli-spinners');
 const ora            = require('ora');
@@ -50,7 +50,7 @@ module.exports = function ( input, outputDir ) {
 	sass.render({
 		data: fileData,
 		includePaths: [ 'node_modules', '../../node_modules' ],
-		// importer: globImporter(),
+		importer: globImporter(),
 		functions: {
 			'scarabExport($__scarab)': function ( scarab ) {
 				// Convert $-SCARAB Sass variable to JSON

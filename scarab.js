@@ -7,9 +7,10 @@ const scarabView       = require('./bin/scarab-view');
 const scarabExport     = require('./bin/scarab-export');
 const scarabInit       = require('./bin/scarab-init');
 const scarabStyleguide = require('./bin/scarab-styleguide');
+const pkg              = require('./package.json');
 
 program
-	.version('0.1.0')
+	.version(pkg.version)
 
 program
 	.command('view [keys...]')
